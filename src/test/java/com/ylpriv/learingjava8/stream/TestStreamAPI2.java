@@ -4,6 +4,7 @@ import com.ylpriv.learingjava8.entiry.Employee;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -40,6 +41,38 @@ public class TestStreamAPI2 {
 
         //只有当做终止操作时，所有的中间操作会一次性的全部执行，称为“惰性求值”
         stream.forEach(System.out::println);
+    }
+
+    //外部迭代
+    @Test
+    public void test3(){
+        Iterator<Employee> it = emps.iterator();
+
+        while(it.hasNext()){
+            System.out.println(it.next());
+        }
+    }
+
+    @Test
+    public void test4(){
+        emps.stream()
+                .filter((e) -> e.getSalary() >= 5000).limit(3) //截断，返回一个不超过三个元素的新流
+                .forEach(System.out::println);
+    }
+
+    @Test
+    public void test5(){
+        emps.parallelStream()
+                .filter((e) -> e.getSalary() >= 5000)
+                .skip(2)
+                .forEach(System.out::println);
+    }
+
+    @Test
+    public void test6(){
+        emps.stream()
+                .distinct() //通过比较hashCode()和equals()判断元素是否重复
+                .forEach(System.out::println);
     }
 
 }
